@@ -1,9 +1,14 @@
-# Managed by Puppet
+### File managed with puppet ###
+### Served by:        '<%= scope.lookupvar('::servername') %>'
+### Module:           '<%= scope.to_hash['module_name'] %>'
+### Template source:  '<%= template_source %>'
+
 database  <%= scope.lookupvar('ldap::params::lp_openldap_db_type') %>
-suffix    "<%= @basedn %>"
-rootdn    "<%= @rootdn %>,<%= @basedn %>"
-rootpw    <%= @rootpw %>
-directory <%= scope.lookupvar('ldap::params::lp_openldap_var_dir') %>/<%= @name %>
+suffix    "<%= basedn %>"
+rootdn    "<%= rootdn %>,<%= basedn %>"
+rootpw    <%= rootpw %>
+
+directory <%= scope.lookupvar('ldap::params::lp_openldap_var_dir') %>/<%= name %>
 
 # Indices to maintain for this database
 index objectClass                       eq,pres

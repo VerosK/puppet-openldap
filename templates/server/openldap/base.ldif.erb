@@ -1,5 +1,9 @@
-# example.org
-dn: <%= @basedn %>
+### File managed with puppet ###
+### Served by:        '<%= scope.lookupvar('::servername') %>'
+### Module:           '<%= scope.to_hash['module_name'] %>'
+### Template source:  '<%= template_source %>'
+
+dn: <%= basedn %>
 objectClass: top
 objectClass: dcObject
 objectClass: organization
@@ -19,16 +23,8 @@ dn: ou=people,<%= @basedn %>
 objectClass: organizationalUnit
 ou: people
 
-# Group, example.org
-dn: ou=groups,<%= @basedn %>
+# Group
+dn: ou=Group,<%= basedn %>
+ou: Group
+objectClass: top
 objectClass: organizationalUnit
-ou: groups
-
-dn: uid=test,ou=people,<%= @basedn %>
-objectClass: inetOrgPerson
-uid: test
-cn: I. Test User
-cn: Test User
-surname: User
-mail: test@example.com
-userPassword: pass
