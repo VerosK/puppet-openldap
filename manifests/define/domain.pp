@@ -40,6 +40,9 @@ define ldap::define::domain(
   $sync_id = undef,
   $sync_master = undef,
 ){
+  # TODO: Add regex validation checks for facts.
+
+
   include ldap::params
   File {
     owner   => 'root',
