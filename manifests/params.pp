@@ -96,15 +96,22 @@ class ldap::params {
       case $::operatingsystemrelease {
         /^5\./: {
           $lp_openldap_service = 'ldap'
-        } /^6\./: {
+          $openldap_client_packages =  [
+            'openldap', 'openldap-clients', 'nss_ldap'
+          ]
+        }
+        /^6\./: {
           $lp_openldap_service = 'slapd'
+          $openldap_client_packages =  [
+            'openldap', 'openldap-clients', 'nss-pam-ldapd'
+          ]
+        }
+        default: {
+          fail("Unexpected RedHat version")
         }
       }
       $openldap_packages = [
         'openldap', 'openldap-servers', 'openldap-clients'
-      ]
-      $openldap_client_packages =  [
-        'openldap', 'openldap-clients', 'nss_ldap'
       ]
     } 'Suse': {
       $openldap_packages = ['openldap2', 'libltdl7', 'openldap2-back-meta']
