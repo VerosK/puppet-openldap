@@ -31,7 +31,14 @@ define ldap::define::domain(
   $ensure = 'present',
   $basedn,
   $rootdn,
-  $rootpw
+  $rootpw,
+
+  # am I sync provider?
+  $ldapsync_provider = false,
+
+  # random sync Id
+  $sync_id = undef,
+  $sync_master = undef,
 ){
   include ldap::params
   File {

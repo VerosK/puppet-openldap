@@ -20,6 +20,11 @@ moduleload  back_bdb
   <%- end -%>
 <%- end -%>
 
+<%# if scope.lookupvar('ldap::params::lp_syncrepl') == true %>
+# FIXME: Add syncprov only when required
+moduleload syncprov
+<%# end %>
+
 pidfile		<%= scope.lookupvar('ldap::params::lp_openldap_run_dir') %>/slapd.pid
 argsfile	<%= scope.lookupvar('ldap::params::lp_openldap_run_dir') %>/slapd.args
 

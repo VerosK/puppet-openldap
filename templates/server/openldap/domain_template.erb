@@ -12,8 +12,34 @@ index uidNumber,gidNumber,loginShell    eq,pres
 index cn,uid,memberUid                  eq,pres,approx,sub
 index nisMapName,nisMapEntry            eq,pres,sub
 
+# Needed for replication
+index entryCSN,entryUUID                eq
+
+<% if @ldapsync_provider %>
+# Enable replication provider
+overlay syncprov
+syncprov-checkpoint 100 10
+syncprov-sessionlog 100
+<% end %>
+
+<% if @sync_id %>
+# replicate from <= @sync_master %>
+syncrepl rid=<%= @sync_id %>
+            provider=<%= @sync_master %>
+            type=refreshAndPersist
+            interval=00:01:00:00
+            searchbase="<%= @basedn %>"
+            scope=sub
+            schemachecking=off
+            bindmethod=simple
+            binddn="<%= @rootdn %>,<%= @basedn %>"
+            credentials="<%= @rootpw %>"
+<% end %>
+
 # Puppet Managed ACL permissions
 include <%= scope.lookupvar('ldap::params::lp_openldap_conf_dir') %>/domains/<%= @name %>-acl.conf
+
+
 
 # Default Admin ACLs
 access to attrs=userPassword
