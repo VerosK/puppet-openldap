@@ -57,9 +57,35 @@ define ldap::client::config (
       file { '/etc/pam_ldap.conf':
         ensure  => file,
         content => template(
-          'ldap/client/debian/pam-nss-base.conf.erb',
-          'ldap/client/debian/pam_ldap.conf.erb'
+          'ldap/client/common/pam-nss-base.conf.erb',
+          'ldap/client/common/pam_ldap.conf.erb'
         ),
+      }
+    }
+    redhat,centos: {
+      file { '/etc/ldap.conf':
+        ensure  => file,
+        content => template('ldap/client/common/nss_pam_ldap.conf.erb'),
+      }
+      file { '/etc/openldap/ldap.conf':
+        ensure  => file,
+        content => template('ldap/client/common/ldap.conf.erb'),
+      }
+      file { '/etc/pam_ldap.conf':
+        ensure  => file,
+        content => template(
+          'ldap/client/common/pam-nss-base.conf.erb',
+          'ldap/client/common/pam_ldap.conf.erb'
+        ),
+      }
+      case  $::operatingsystemrelease {
+        /^6\./: {
+          file { '/etc/nslcd.conf':
+            ensure => file,
+            content => template('ldap/client/redhat/nslcd.conf.erb'),
+            notify => Service['nslcd'],
+          }
+        }
       }
     }
     default: {

@@ -18,8 +18,9 @@ class ldap::client::service(
 
   # TODO: Need to add a translation between passed 'ensure' to this service
   # state
+  include ldap::params
 
-  service { 'nscd':
+  service { $ldap::params::openldap_client_services:
     ensure     => 'running',
     enable     => true,
     hasrestart => true,

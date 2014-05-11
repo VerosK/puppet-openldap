@@ -66,6 +66,10 @@ class ldap::params {
     'Debian'    => '/usr/lib/ldap',
     default     => 'UNDEF',
   }
+  $openldap_client_services = $::osfamily ? {
+    'RedHat'    => ['nscd','nslcd'],
+    default     => ['nscd']
+}
 
   # Service name and packages need to be selected with more complex logic.
   case $::osfamily {

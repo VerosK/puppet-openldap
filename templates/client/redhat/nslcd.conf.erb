@@ -1,0 +1,40 @@
+# /etc/nslcd.conf
+#
+# Managed by Puppet
+#
+# nslcd configuration file. See nslcd.conf(5)
+# for details.
+
+# The user and group nslcd should run as.
+uid nslcd
+gid ldap
+
+<% if ssl == 'true' %>
+URI <% servers.each do |server| %> ldaps://<%= server %> <% end %>
+<% else %>
+URI <% servers.each do |server| %> ldap://<%= server %> <% end %>
+<% end %>
+
+# The search base that will be used for all queries.
+base <%= base_dn %>
+
+# The LDAP protocol version to use.
+#ldap_version 3
+
+# The DN to bind with for normal lookups.
+#binddn anonymous
+#bindpw
+
+# The DN used for password modifications by root.
+#rootpwmoddn !NO-MODIFICATIONS!
+
+# SSL options
+#ssl off
+#tls_reqcert never
+
+# The search scope.
+scope sub
+
+# if loginShell is empty, replace by /bin/nologin
+map passwd loginShell "${loginShell:-/bin/nologin}"
+
